@@ -1,3 +1,5 @@
 # resource-agent-hypervisor
 
-TellMesh core package extracted from [wronai/hypervisor](https://github.com/wronai/hypervisor).
+TellMesh meta-agent and runtime client — depends on [`hypervisor`](../hypervisor).
+
+Monorepo umbrella: [`../tellmesh/`](../tellmesh/).

@@ -14,7 +14,7 @@ def package_root() -> Path:
 @pytest.fixture(scope="session")
 def repo_root() -> Path:
     return Path(
-        os.environ.get("HYPERVISOR_REPO_ROOT", "/home/tom/github/wronai/hypervisor")
+        os.environ.get("HYPERVISOR_REPO_ROOT", "/home/tom/github/tellmesh/tellmesh")
     ).resolve()
 
 
