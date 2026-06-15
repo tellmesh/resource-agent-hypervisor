@@ -7,15 +7,21 @@ import pytest
 
 
 @pytest.fixture(scope="session")
-def repo_root() -> Path:
+def package_root() -> Path:
     return Path(__file__).resolve().parents[1]
 
 
+@pytest.fixture(scope="session")
+def repo_root() -> Path:
+    return Path(
+        os.environ.get("HYPERVISOR_REPO_ROOT", "/home/tom/github/wronai/hypervisor")
+    ).resolve()
+
+
 @pytest.fixture(scope="session", autouse=True)
-def _hypervisor_repo_root(repo_root: Path):
-    hypervisor = Path(os.environ.get("HYPERVISOR_REPO_ROOT", "/home/tom/github/wronai/hypervisor"))
+def _hypervisor_repo_root_env(repo_root: Path):
     previous = os.environ.get("HYPERVISOR_REPO_ROOT")
-    os.environ["HYPERVISOR_REPO_ROOT"] = str(hypervisor.resolve())
+    os.environ["HYPERVISOR_REPO_ROOT"] = str(repo_root)
     yield
     if previous is None:
         os.environ.pop("HYPERVISOR_REPO_ROOT", None)

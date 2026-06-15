@@ -10,6 +10,11 @@ requires-python = ">=3.10"
 license = "Apache-2.0"
 dependencies = [
     "uri3",
+    "uri2pact",
+    "uri2run",
+    "uri2verify",
+    "uri2ops",
+    "nl2uri",
     "httpx>=0.27",
     "jsonschema>=4.23",
     "pyyaml>=6.0",
