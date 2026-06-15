@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "resource-agent-hypervisor"
-version = "0.5.7"
+version = "0.5.8"
 description = "Meta-agent and runtime client for TellMesh hypervisor"
 requires-python = ">=3.10"
 license = "Apache-2.0"

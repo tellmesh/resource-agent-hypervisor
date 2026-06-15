@@ -132,7 +132,7 @@ wheels = [
 
 [[package]]
 name = "hypervisor"
-version = "0.5.7"
+version = "0.5.8"
 source = { editable = "../hypervisor" }
 dependencies = [
     { name = "fastapi" },
@@ -333,7 +333,7 @@ wheels = [
 
 [[package]]
 name = "nl2uri"
-version = "0.5.6"
+version = "0.5.7"
 source = { editable = "../nl2uri" }
 dependencies = [
     { name = "httpx" },
@@ -348,7 +348,10 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
+    { name = "costs", marker = "extra == 'dev'", specifier = ">=0.1.20" },
+    { name = "goal", marker = "extra == 'dev'", specifier = ">=2.1.0" },
     { name = "httpx", specifier = ">=0.27" },
+    { name = "pfix", marker = "extra == 'dev'", specifier = ">=0.1.60" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=7.0" },
     { name = "python-dotenv", specifier = ">=1.0.0" },
     { name = "pyyaml", specifier = ">=6.0" },
@@ -626,7 +629,7 @@ wheels = [
 
 [[package]]
 name = "resource-agent-factory"
-version = "0.5.6"
+version = "0.5.7"
 source = { editable = "../resource-agent-factory" }
 dependencies = [
     { name = "fastapi" },
@@ -651,7 +654,7 @@ provides-extras = ["dev"]
 
 [[package]]
 name = "resource-agent-hypervisor"
-version = "0.5.7"
+version = "0.5.8"
 source = { editable = "." }
 dependencies = [
     { name = "fastapi" },
