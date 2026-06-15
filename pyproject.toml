@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "resource-agent-hypervisor"
-version = "0.5.6"
+version = "0.5.7"
 description = "Meta-agent and runtime client for TellMesh hypervisor"
 requires-python = ">=3.10"
 license = "Apache-2.0"
@@ -16,6 +16,9 @@ dependencies = [
     "fastapi>=0.115",
 ]
 
+[project.optional-dependencies]
+dev = ["pytest>=7.0", "resource-agent-factory"]
+
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["meta_agent*", "runtime_client*"]
@@ -26,3 +29,4 @@ pythonpath = ["."]
 
 [tool.uv.sources]
 hypervisor = { path = "../hypervisor", editable = true }
+resource-agent-factory = { path = "../resource-agent-factory", editable = true }
