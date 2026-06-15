@@ -1,0 +1,25 @@
+version: '1.0'
+project:
+  name: resource-agent-hypervisor
+  type: [python]
+  description: 'resource-agent-hypervisor — TellMesh core package'
+versioning:
+  strategy: semver
+  files: [pyproject.toml:version]
+git:
+  commit:
+    strategy: conventional
+    scope: resource-agent-hypervisor
+  tag:
+    enabled: true
+    prefix: v
+strategies:
+  python:
+    test: pytest tests/ -q
+    build: python -m build
+    publish: twine upload dist/resource-agent-hypervisor-{version}*
+    publish_enabled: true
+registries:
+  pypi:
+    url: https://pypi.org/simple/
+    token_env: PYPI_TOKEN

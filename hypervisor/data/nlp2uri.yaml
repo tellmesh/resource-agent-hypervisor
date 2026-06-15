@@ -1,0 +1,50 @@
+# Default hypervisor / nl2uri configuration (embedded)
+# platform: auto | linux | darwin | windows
+
+platform: auto
+host_platform: linux
+locale: null
+dry_run: false
+capture_dir: /tmp/nlp2uri-captures
+
+llm:
+  provider: openrouter
+  model_uri: llm://openrouter/qwen/qwen3-coder-next
+  api_key_uri: env://OPENROUTER_API_KEY
+
+uri3:
+  enabled_schemes:
+    - env
+    - llm
+    - log
+    - python
+    - http
+    - https
+    - a2a
+    - mcp
+    - pypi
+    - artifact
+    - resource
+    - domain
+    - command
+    - event
+    - input
+
+registry:
+  path: contracts/registry.yaml
+  output: output/contract_registry.resolved.json
+
+domain_pack:
+  root: domains/
+
+agents:
+  generated_root: agents/generated/
+
+deployment:
+  registry: deployments/agent_deployments.yaml
+
+hypervisor:
+  log_level: INFO
+  max_agents: 8
+  default_profile: normal
+  enable_event_sourcing: true
