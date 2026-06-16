@@ -60,7 +60,7 @@ EXAMPLE_AUDIT: tuple[ExampleAuditSpec, ...] = (
     ),
     ExampleAuditSpec("08", "evolution"),
     ExampleAuditSpec("09", "run_agent_hypervisor", "weather-map-agent.local"),
-    ExampleAuditSpec("10", "browser_operator", "browser-operator.local", "agents/operators/browser_operator.yaml"),
+    ExampleAuditSpec("10", "browser_operator", "browser-operator.local", "agents/operators/browser_operator/browser_operator.yaml"),
     ExampleAuditSpec("11", "playwright_browser", "browser-operator.local"),
     ExampleAuditSpec("12", "android_operator", "desktop-operator.local"),
     ExampleAuditSpec("13op", "pcwin_operator", "desktop-operator.local"),
@@ -84,7 +84,7 @@ EXAMPLE_AUDIT: tuple[ExampleAuditSpec, ...] = (
     ExampleAuditSpec("33", "office_workflows", "invoices-agent.local"),
     ExampleAuditSpec("34", "cron_uri", "invoices-agent.local"),
     ExampleAuditSpec("35", "website_screenshot_schedule"),
-    ExampleAuditSpec("36", "physical_ops", "device-robot-operator.local", "agents/operators/device_robot_operator.yaml"),
+    ExampleAuditSpec("36", "physical_ops", "device-robot-operator.local", "agents/operators/device_robot_operator/device_robot_operator.yaml"),
     ExampleAuditSpec(
         "37",
         "agent_screenshot_analysis",
@@ -122,6 +122,23 @@ class AuditReport:
         return sum(1 for item in self.findings if item.severity == "warn")
 
 
+def _contract_paths_equal(left: str | None, right: str | None) -> bool:
+    if not left or not right:
+        return left == right
+    if left == right:
+        return True
+    left_path = Path(left)
+    right_path = Path(right)
+    if left_path == right_path:
+        return True
+    # Accept agents/foo/bar.yaml vs agents/foo/bar/bar.yaml style aliases.
+    if left_path.name == right_path.name and left_path.parent.name == right_path.stem:
+        return True
+    if right_path.name == left_path.name and right_path.parent.name == left_path.stem:
+        return True
+    return False
+
+
 def _validate_example(spec: ExampleAuditSpec, repo: Path, registry: object) -> list[Finding]:
     findings: list[Finding] = []
     example_dir = (
@@ -150,7 +167,7 @@ def _validate_example(spec: ExampleAuditSpec, repo: Path, registry: object) -> l
             return findings
 
         metadata_contract = (deployment.metadata or {}).get("contract")
-        if spec.contract_path and metadata_contract and metadata_contract != spec.contract_path:
+        if spec.contract_path and metadata_contract and not _contract_paths_equal(metadata_contract, spec.contract_path):
             findings.append(
                 Finding(
                     "warn",
@@ -176,7 +193,7 @@ def _validate_example(spec: ExampleAuditSpec, repo: Path, registry: object) -> l
             findings.append(
                 Finding("error", spec.example_id, f"No contract resolved for {spec.deployment_id}")
             )
-        elif spec.contract_path and report.data["contract_path"] != spec.contract_path:
+        elif spec.contract_path and not _contract_paths_equal(report.data["contract_path"], spec.contract_path):
             findings.append(
                 Finding(
                     "warn",
@@ -274,7 +291,7 @@ def _validate_deployments(repo: Path, registry: object) -> list[Finding]:
             continue
         if not report.data.get("contract_path"):
             findings.append(Finding("error", deployment.id, "describe-agent resolved no contract"))
-        elif metadata_contract and report.data["contract_path"] != metadata_contract:
+        elif metadata_contract and not _contract_paths_equal(report.data["contract_path"], metadata_contract):
             findings.append(
                 Finding(
                     "warn",
